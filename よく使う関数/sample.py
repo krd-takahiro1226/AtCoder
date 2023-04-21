@@ -66,3 +66,9 @@ def eratosthenes_sieve(n):
             for q in range(2*p, n + 1, p):
                 is_prime[q] = False
     return is_prime
+
+# 10進数をn進数に変換する関数
+def Base_10_to_n(X, n):
+    if X//n:
+        return Base_10_to_n(X//n, n)+str(X % n)
+    return str(X % n)
