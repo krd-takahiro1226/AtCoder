@@ -64,7 +64,7 @@ class unionfind:
     def same(self, u, v):
         return self.root(u) == self.root(v)
 
-# エラトステネスのふるい
+# エラトステネスのふるい(nが素数か判定)
 # O(NloglogN)
 def eratosthenes_sieve(n):
     is_prime = [True]*(n + 1)
@@ -75,13 +75,26 @@ def eratosthenes_sieve(n):
                 is_prime[q] = False
     return is_prime
 
+# エラトステネスのふるい(x以下の素数列挙)
+def sieve_of_eratosthenes(x):
+    nums = [i for i in range(x+1)]
+    root = int(pow(x,0.5))
+    for i in range(2,root + 1):
+        if nums[i] != 0:
+            for j in range(i, x+1):
+                if i*j >= x+1:
+                    break
+                nums[i*j] = 0
+    primes = sorted(list(set(nums)))[2:]
+    return primes
+
 # 10進数をn進数に変換する関数
 def Base_10_to_n(X, n):
     if X//n:
         return Base_10_to_n(X//n, n)+str(X % n)
     return str(X % n)
 
-# a の b 乗を m で割った余りを返す関数
+# a の b 乗を m で割った余りを返す関数(for文の30は条件によって変更する必要あり)
 def Power(a, b, m):
 	p = a
 	Answer = 1
@@ -91,7 +104,6 @@ def Power(a, b, m):
 			Answer = (Answer * p) % m # a の 2^i 乗が掛けられるとき
 		p = (p * p) % m
 	return Answer
-
 
 # 深さ優先探索(鉄則本A63)
 import sys
@@ -121,6 +133,33 @@ while len(Q) >= 1:
         if dist[i] == -1:
             dist[i] = dist[pos] + 1
             Q.append(i)
-
 for i in range(1,N+1):
     print(dist[i])
+
+
+
+# 長さNでnum番目の順列を求める
+from collections import deque
+def Permutation_N(N,num):
+    remain_deque = deque()
+    serial_num = list(range(1,N+1))
+    ans = []
+    for i in range(1,N+1):
+        remain = num % i
+        num = num // i
+        remain_deque.appendleft(remain)
+    for j in range(N):
+        ind = remain_deque.popleft()
+        ans.append(serial_num[ind])
+        serial_num.pop(ind)
+    return ans
+
+# 順列が辞書順に何番目か調べる関数
+from math import factorial #x!を計算
+def index_of_permutation(L):
+    index = 0  #0-indexed
+    while len(L)> 1:
+        a = len([l for l in L if l<L[0]])
+        index = index + a * factorial(len(L) - 1)
+        L = L[1:]
+    return index
