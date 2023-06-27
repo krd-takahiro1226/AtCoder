@@ -1,22 +1,31 @@
-import numpy as np
-N , X = map(int,input().split())
-AB = [list(map(int, input().split())) for l in range(N)]
-A = []
-B = []
-for i in range(N):
-    A.append(AB[i][0])
-    B.append(AB[i][1])
+N, X = map(int,input().split())
+A_list = []
+B_list = []
+coin_num = 0
+ans = False
+for _ in range(N):
+    A, B = map(int,input().split())
+    A_list.append(A)
+    B_list.append(B)
+    coin_num += B
+dp = [[False] * (X+1) for _ in range(N+1)]
+dp[0][0] = True
 
-
-
-
-
-
-
-
-
-
-
+for i in range(1,N+1):
+    for j in range(X+1):
+        if dp[i-1][j] or dp[i][j]:
+            dp[i][j] = True
+        for k in range(B_list[i-1]+1):
+            if dp[i-1][j] == True and j + k*A_list[i-1] <= X:
+                dp[i][j+k*A_list[i-1]] = True
+                dp[i][j] = True
+                if j + k*A_list[i-1] == X:
+                    ans = True
+                    break
+if ans:
+    print("Yes")
+else:
+    print("No")
 
 
 
