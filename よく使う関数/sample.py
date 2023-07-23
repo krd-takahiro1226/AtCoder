@@ -167,7 +167,7 @@ def Power(a, b, m):
 		p = (p * p) % m
 	return Answer
 
-# 深さ優先探索(鉄則本A63)
+# 幅優先探索(鉄則本A63)
 import sys
 from collections import deque
 sys.setrecursionlimit(100000)
